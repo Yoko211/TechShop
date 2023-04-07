@@ -120,12 +120,22 @@
           </div>
           
           <div class="col">
-              <label for="category_id">ID de category:</label><br>
-              <input type="number" class="form-control" name="category_id" required><br>              
-          </div>
+              <?php                    
+                $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                $category_name_query = "SELECT DISTINCT c.id, c.name AS category_name 
+                            FROM ts_product p 
+                            JOIN ts_category c 
+                            ON p.category_id = c.id";
+                $stmt = $pdo->query($category_name_query);
+              ?>
+                <label for="category_id">Categoría:</label>
+                <select name="category_id">
+                  <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <option value="<?php echo $row['id']; ?>"><?php echo $row['category_name']; ?></option>
+                  <?php } ?>
+                </select>
+          </div><br>
           
-         
-
             <div class="col">
                 <button type="submit" class="btn btn-success" name="submit">SAVE</button>
                 <a href="products_list.php" class="btn btn-danger">CANCEL</a>
