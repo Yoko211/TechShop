@@ -44,6 +44,48 @@
     <div class="container">
     <h1>HOME</h1>
         <!-- Banner Advertising  -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="advertising/ryzen.jpg" alt="First slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/legion.jpg" alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/nvidia.jpg" alt="Third slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/giga.jpg" alt="four slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/Razer-headsets.jpg" alt="fifth slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/asus.jpg" alt="six slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="advertising/rtx3090.jpg" alt="seven slide">
+                </div>                
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div><br>
         
 
         <h1> PRODUCTS </h1> <br>
