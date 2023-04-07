@@ -66,12 +66,13 @@ if (!isset($_POST["submit"])){
             <button class="btn-main"><i class="fa fa-search"></i></button>
         </div>
         <div class="items-nav">
-            <div class="item-option" title="Register new product">
-                <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
-            </div>
             <div class = item-option title="Home">
                     <a href="index.php"><i class="fa fa-home"></i></a>
             </div>
+            <div class="item-option" title="Register new product">
+                <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
+            </div>
+            
             <div class="item-option" title="Create User"><i class="fa fa-user"></i></div>
             <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
         </div>
@@ -116,9 +117,21 @@ if (!isset($_POST["submit"])){
                 </div> <br>         
 
                 <div class="col">
-                    <label for="category_id">ID de category:</label><br>
-                    <input type="number" class="form-control" name="category_id" required><br>              
-                </div>
+                    <label for="category_name">Category Name:</label>
+                    <?php
+                        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                        $category_name_query = "SELECT DISTINCT c.name AS category_name, c.id AS category_id
+                                                FROM ts_product p 
+                                                JOIN ts_category c 
+                                                ON p.category_id = c.id";
+                        $stmt = $pdo->query($category_name_query);
+                    ?>
+                    <select name="category_id">
+                        <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                            <option value="<?php echo $row['category_id']; ?>" <?php if ($category_id == $row['category_id']) echo "selected"; ?>><?php echo $row['category_name']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div><br>
 
                 <div class="col">
                     <input type="hidden" name="id" value="<?php echo $id ?>">
