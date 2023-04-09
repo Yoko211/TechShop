@@ -86,8 +86,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div><br>
-        
-
+         
         <h1> PRODUCTS </h1> <br>
 
         <div class="card_container">
