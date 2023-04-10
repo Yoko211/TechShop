@@ -33,13 +33,14 @@
                 <a href="index.php"><i class="fa fa-home"></i></a>
             </div>
             <div class = item-option title="Products List">
-                <a href="products_list.php"><i class="fa fa-list"></i></a>
-            </div>                
-            <div class="item-option" title="Log In">
-                <a href="login.php"><i class="fa fa-user"></i></a>
-            
+                <a href="products_list_admin.php"><i class="fa fa-list"></i></a>
             </div>
-
+            <div class="item-option" title="Register new product">
+                <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
+            </div>            
+            <div class="item-option" title="Log In">
+                <a href="login.php"><i class="fa fa-user"></i></a>            
+            </div>
             <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
         </div>
     </header>    

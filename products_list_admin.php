@@ -21,14 +21,14 @@
         </div>
         <div class="items-nav">
             <div class = item-option title="Home">
-                <a href="index.php"><i class="fa fa-home"></i></a>
+                <a href="index_admin.php"><i class="fa fa-home"></i></a>
             </div>
             <div class = item-option title="Products List">
-                <a href="products_list.php"><i class="fa fa-list"></i></a>
+                <a href="products_list_admin.php"><i class="fa fa-list"></i></a>
             </div>
-            <!-- <div class="item-option" title="Register new product">
+            <div class="item-option" title="Register new product">
                 <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
-            </div>             -->
+            </div>            
             <div class="item-option" title="Log In">
                 <a href="login.php"><i class="fa fa-user"></i></a>            
             </div>
@@ -55,7 +55,7 @@
                 <th scope="col">Price</th>
                 <th scope="col">Category</th>
                 <th scope="col">Image</th>
-                <!-- <th scope="col">Action</th> -->
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -71,14 +71,14 @@
                 <td><?php echo $row['price']?></td>
                 <td><?php echo $row['category_name']?></td>
                 <td><img src="<?php echo $row['image_url']; ?>" alt=" " width="100"></td>
-                <!-- <td>
+                <td>
                     <a href="edit.php?id=<?php echo $row['id']?>" class="link-dark">
                         <i class="fa-solid fa-pen-to-square fa-1x" title="Edit" style="color: #284880;"></i>
                     </a>                    
                     <a href="delete.php?id=<?php echo $row['id']?>" class="link-dark" onclick="return confirm('¿Are you sure you want to delete the product?')">
                         <i class="fa-solid fa-trash fa-1x" title= "Delete" style="color: #284880;"></i>
                     </a>                    
-                </td> -->
+                </td>
             </tr>
             <?php
                 }

@@ -42,7 +42,7 @@ if (!isset($_POST["submit"])){
     $result->execute(array($reference, $manufacturer, $description, $price, $features, $image, $category_id, $id));
 
     $pdo = null;
-    header("location:products_list.php");
+    header("location:products_list_admin.php");
 }
 ?>
 
@@ -67,13 +67,15 @@ if (!isset($_POST["submit"])){
         </div>
         <div class="items-nav">
             <div class = item-option title="Home">
-                    <a href="index.php"><i class="fa fa-home"></i></a>
+                    <a href="index_admin.php"><i class="fa fa-home"></i></a>
             </div>
             <div class="item-option" title="Register new product">
                 <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
             </div>
             
-            <div class="item-option" title="Create User"><i class="fa fa-user"></i></div>
+            <div class="item-option" title="Log In">
+                <a href="login.php"><i class="fa fa-user"></i></a>            
+            </div>
             <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
         </div>
     </header>
@@ -136,7 +138,7 @@ if (!isset($_POST["submit"])){
                 <div class="col">
                     <input type="hidden" name="id" value="<?php echo $id ?>">
                     <button type="submit" class="btn btn-success" name="submit">UPDATE</button>
-                    <a href="products_list.php" class="btn btn-danger">CANCEL</a>
+                    <a href="products_list_admin.php" class="btn btn-danger">CANCEL</a>
                 </div>            
             </form>
         </div>

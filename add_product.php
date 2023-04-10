@@ -46,7 +46,7 @@
     
     // Close connection
     $pdo = null;
-    header("Location: products_list.php?msg=Item was added successfully");    
+    header("Location: products_list_admin.php?msg=Item was added successfully");    
   }
 
 ?>
@@ -72,15 +72,17 @@
         </div>
         <div class="items-nav">
             <div class = item-option title="Home">
-                <a href="index.php"><i class="fa fa-home"></i></a>
+                <a href="index_admin.php"><i class="fa fa-home"></i></a>
             </div>
             <div class = item-option title="Products List">
-                <a href="products_list.php"><i class="fa fa-list"></i></a>
+                <a href="products_list_admin.php"><i class="fa fa-list"></i></a>
             </div>
             <div class="item-option" title="Register new product">
                 <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
             </div>            
-            <div class="item-option" title="Create User"><i class="fa fa-user"></i></div>
+            <div class="item-option" title="Log In">
+                <a href="login.php"><i class="fa fa-user"></i></a>            
+            </div>
             <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
         </div>
     </header>
@@ -138,7 +140,7 @@
           
             <div class="col">
                 <button type="submit" class="btn btn-success" name="submit">SAVE</button>
-                <a href="products_list.php" class="btn btn-danger">CANCEL</a>
+                <a href="products_list_admin.php" class="btn btn-danger">CANCEL</a>
             </div>           
         </form>
       </div>

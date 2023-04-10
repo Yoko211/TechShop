@@ -124,3 +124,37 @@ header {
 }
 
 
+.validation-group{
+    margin: 40px auto;
+    border: 1px rgb(211, 205, 205) solid;
+    border-radius: 10px;  
+    width: 35%;
+    height: 400px;
+    align-items: center;
+    text-align: center;
+}
+.form-group{
+    margin: 10px auto;
+    width: 70%;
+    padding: 20px 0px 20px 0px;
+}
+
+.login-buttons{
+    padding-top: 20px;
+    width: 70%;
+    margin: 0px auto;
+    text-align: left;    
+}
+
+.error-message{
+    font-size: 20px;
+    color: red;
+    
+    width: 70%;
+    margin: 0px auto;
+    text-align: left;   
+}
+
+
+
+
