@@ -1,11 +1,6 @@
 <?php
-
-  require("_connect.php");
-  //require("authenticate.php");
-
-  if //($_SERVER["REQUEST_METHOD"] == "POST") 
-  (isset($_POST['submit']))  {
-   
+require("_connect.php");
+if (isset($_POST['submit']))  {   
     // Get form information
     $manufacturer = $_POST["manufacturer"];
     $reference = $_POST["reference"];
@@ -23,8 +18,8 @@
       $image_url = "";
     }
     
-    $features = $_POST["features"];
-  
+    $features = $_POST["features"];  
+    
     // Insert info on BD
     try {
       $sql = "INSERT INTO TS_Product (manufacturer, Reference, description, price, image_url, features, category_id) 
@@ -41,15 +36,13 @@
       // echo "Register added successfully";
     } catch(PDOException $e) {
       echo "Error to add register: " . $e->getMessage();
-    }
-  
-    
+    }    
     // Close connection
     $pdo = null;
     header("Location: products_list_admin.php?msg=Item was added successfully");    
-  }
-
+ }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

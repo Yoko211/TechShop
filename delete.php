@@ -1,8 +1,6 @@
 <?php
 
     require("_connect.php");
-
-
     $id = $_GET['id'];
     echo $id;
 
@@ -13,7 +11,7 @@
 
     //Redirect to the product list Page
     if ($result) {
-        header("Location: products_list.php?msg=Item was deleted successfully");
+        header("Location: products_list_admin.php?msg=Item was deleted successfully");
     } else {     
         echo "Failed to delete record";
     }

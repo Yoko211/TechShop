@@ -1,7 +1,7 @@
 <?php
 require("_connect.php");
 
-$id = $_GET['id'];
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 // Fetch the product with the given ID
 $sql = "SELECT * FROM `ts_product` WHERE id = :id LIMIT 1";
@@ -19,13 +19,13 @@ if (!isset($_POST["submit"])){
     $category_id = $row['category_id'];
     
 } else {
-    $id = $_POST['id'];
-    $manufacturer = $_POST['manufacturer'];
-    $reference = $_POST['reference'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
-    $features = $_POST['features'];
-    $category_id = $_POST['category_id'];
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $manufacturer = filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING);
+    $reference = filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_STRING);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $features = filter_input(INPUT_POST, 'features', FILTER_SANITIZE_STRING);
+    $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
     
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
         $image_tmp = $_FILES['image']['tmp_name'];
@@ -35,16 +35,15 @@ if (!isset($_POST["submit"])){
         $image = $image_path;
     } else {
         $image = $row['image_url'];
-    }
-    
+    }    
     $sql = "UPDATE `ts_product` SET `reference`= ?, `manufacturer`= ?, `description`= ?, `price`= ?, `features`= ?, `image_url`= ?, `category_id`= ? WHERE id=?";
     $result = $pdo->prepare($sql);
     $result->execute(array($reference, $manufacturer, $description, $price, $features, $image, $category_id, $id));
-
     $pdo = null;
     header("location:products_list_admin.php");
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
