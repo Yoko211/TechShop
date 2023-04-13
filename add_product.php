@@ -117,10 +117,8 @@ if (isset($_POST['submit']))  {
           <div class="col">
               <?php                    
                 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-                $category_name_query = "SELECT DISTINCT c.id, c.name AS category_name 
-                            FROM ts_product p 
-                            JOIN ts_category c 
-                            ON p.category_id = c.id";
+                $category_name_query = "SELECT id, name AS category_name
+                                        FROM ts_category;";
                 $stmt = $pdo->query($category_name_query);
               ?>
                 <label for="category_id">Categoría:</label>

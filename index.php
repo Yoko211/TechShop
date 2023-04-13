@@ -87,14 +87,37 @@
          
         <h1> PRODUCTS </h1> <br>
 
-        <div class="card_container">
-            <?php
-                include ("_connect.php");
-                $category_name="SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id";
-                $stmt = $pdo->query($category_name);
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            ?>
-                <div>
+        <?php            
+            
+            $products_by_page = 10;
+
+            // Get the total number of products
+            $category = "SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id";
+            $stmt_total = $pdo->query($category);
+            $total_products = $stmt_total->rowCount();
+
+            // Calculate the total number of pages
+            $total_pages = ceil($total_products / $products_by_page);
+
+            // Get current page
+            if (isset($_GET['page'])) {
+                $current_page = $_GET['page'];
+            } else {
+                $current_page = 1;
+            }
+
+            // Calculate the index of the first product on the current page
+            $first_product = ($current_page - 1) * $products_by_page;
+
+            // Get products to current page
+            $paginated_category = "SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id LIMIT $first_product, $products_by_page";
+            $stmt_paginated = $pdo->query($paginated_category);
+        ?>
+
+            <!-- Show the products for the current page -->
+            <div class="card_container">
+                <?php while ($row = $stmt_paginated->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <div>
                         <div class="card">
                             <div class="card_margin">                        
                                 <img src="<?php echo $row['image_url']; ?>" alt=" " width=" ">
@@ -108,10 +131,16 @@
                             </div>
                         </div>
                     </div>
-            <?php
-                }
-            ?> 
-        </div>   
+                <?php } ?>
+            </div><br>
+
+            <!-- Show the pagination -->
+            <div class="pagination-text">
+                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                    <a href="?page=<?php echo " " . $i; ?>" <?php if ($i == $current_page) { echo 'class="active"'; } ?>><?php echo  " " . $i; ?></a>
+                <?php } ?>
+            </div>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
