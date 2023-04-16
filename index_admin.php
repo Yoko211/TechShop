@@ -19,11 +19,70 @@
 </head>
 <body>
     <header>
+        <?php
+            $products_by_page = 10;
+
+            // Get the total number of products
+            $category = isset($_GET['category']) ? $_GET['category'] : '';
+            $manufacturer = isset($_GET['manufacturer']) ? $_GET['manufacturer'] : '';
+            $search_query = isset($_GET['search']) ? $_GET['search'] : '';
+            $where_clause = '';
+            $bind_params = [];
+            if ($category !== '') {
+                $where_clause .= 'WHERE c.name = :category';
+                $bind_params['category'] = $category;
+            }
+            if ($manufacturer !== '') {
+                if ($where_clause === '') {
+                    $where_clause .= 'WHERE ';
+                } else {
+                    $where_clause .= ' AND ';
+                }
+                $where_clause .= 'p.manufacturer = :manufacturer';
+                $bind_params['manufacturer'] = $manufacturer;
+            }
+            if ($search_query !== '') {
+                if ($where_clause === '') {
+                    $where_clause .= 'WHERE ';
+                } else {
+                    $where_clause .= ' AND ';
+                }
+                $where_clause .= 'p.description LIKE :search_query';
+                $bind_params['search_query'] = "%{$search_query}%";
+            }
+            $total_stmt = $pdo->prepare("SELECT COUNT(*) FROM ts_product p JOIN ts_category c ON p.category_id = c.id $where_clause");
+            foreach ($bind_params as $key => &$value) {
+                $total_stmt->bindParam(':' . $key, $value);
+            }
+            $total_stmt->execute();
+            $total_products = $total_stmt->fetchColumn();
+
+            // Calculate the total number of pages
+            $total_pages = ceil($total_products / $products_by_page);
+
+            // Get current page
+            if (isset($_GET['page'])) {
+                $current_page = $_GET['page'];
+            } else {
+                $current_page = 1;
+            }
+
+            // Calculate the index of the first product on the current page
+            $first_product = ($current_page - 1) * $products_by_page;
+
+            // Get products for current page
+            $paginated_stmt = $pdo->prepare("SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id $where_clause ORDER BY p.id LIMIT $first_product, $products_by_page");
+            foreach ($bind_params as $key => &$value) {
+                $paginated_stmt->bindParam(':' . $key, $value);
+            }
+            $paginated_stmt->execute();
+        ?>
         <div class="logo"><img src="logo/logo.png"></div>
-        <div class="search-place">
-            <input type="text" class="id-search" id="id-search" placeholder="Search Product">
-            <button class="btn-main"><i class="fa fa-search"></i></button>
-        </div>
+        <!-- Search form -->
+        <form action="" method="get" class="search-place">            
+            <input type="text" name="search" class="id-search" id="search" placeholder="Search Product" value="<?php echo $search_query ?>">
+            <button type="submit" class="btn-main"><i class="fa fa-search"></i></button>
+        </form>
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index.php"><i class="fa fa-home"></i></a>
@@ -84,61 +143,34 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
-        </div><br>         
-        <h1> PRODUCTS </h1> <br>
-        <?php            
-            
-            $products_by_page = 10;
+        </div><br>
 
-            // Get the total number of products
-            $category = "SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id";
-            $stmt_total = $pdo->query($category);
-            $total_products = $stmt_total->rowCount();
-
-            // Calculate the total number of pages
-            $total_pages = ceil($total_products / $products_by_page);
-
-            // Get current page
-            if (isset($_GET['page'])) {
-                $current_page = $_GET['page'];
-            } else {
-                $current_page = 1;
-            }
-
-            // Calculate the index of the first product on the current page
-            $first_product = ($current_page - 1) * $products_by_page;
-
-            // Get products to current page
-            $paginated_category = "SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id LIMIT $first_product, $products_by_page";
-            $stmt_paginated = $pdo->query($paginated_category);
-        ?>
-
-            <!-- Show the products for the current page -->
-            <div class="card_container">
-                <?php while ($row = $stmt_paginated->fetch(PDO::FETCH_ASSOC)) { ?>
-                    <div>
-                        <div class="card">
-                            <div class="card_margin">                        
-                                <img src="<?php echo $row['image_url']; ?>" alt=" " width=" ">
-                            </div>
-                            <div class ="content_product">
-                                <h4><?php echo $row['category_name']?></h4>
-                                <p><?php echo $row['description']?></p>                                            
-                            </div>
-                            <div class="price">
-                                <p>$<?php echo $row['price']?></p>
-                            </div>
-                        </div>
+    <h1> PRODUCTS </h1> <br>
+    <!-- Show the products for the current page -->
+    <div class="card_container">
+        <?php while ($row = $paginated_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+            <div>
+                <div class="card">
+                    <div class="card_margin">                        
+                        <img src="<?php echo $row['image_url']; ?>" alt=" " width=" ">
                     </div>
-                <?php } ?>
-            </div><br>
-
-            <!-- Show the pagination -->
-            <div class="pagination-text">
-                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                    <a href="?page=<?php echo " " . $i; ?>" <?php if ($i == $current_page) { echo 'class="active"'; } ?>><?php echo  " " . $i; ?></a>
-                <?php } ?>
+                    <div class ="content_product">
+                        <h4><?php echo $row['category_name']?></h4>
+                        <p><?php echo $row['description']?></p>                                            
+                    </div>
+                    <div class="price">
+                        <p>$<?php echo $row['price']?></p>
+                    </div>
+                </div>
             </div>
+        <?php } ?>
+    </div><br>
+    <!-- Show the pagination -->
+    <div class="pagination-text">
+        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+            <a href="?page=<?php echo " " . $i; ?>" <?php if ($i == $current_page) { echo 'class="active"'; } ?>><?php echo  " " . $i; ?></a>
+        <?php } ?>
+    </div>       
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />

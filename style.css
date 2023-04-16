@@ -148,8 +148,7 @@ header {
 
 .error-message{
     font-size: 20px;
-    color: red;
-    
+    color: red;    
     width: 70%;
     margin: 0px auto;
     text-align: left;   
@@ -160,7 +159,3 @@ header {
     font-size: 18px;
     text-align: center;    
 }
-
-
-
-
