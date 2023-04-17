@@ -81,6 +81,16 @@
         <!-- Search form -->
         <form action="" method="get" class="search-place">            
             <input type="text" name="search" class="id-search" id="search" placeholder="Search Product" value="<?php echo $search_query ?>">
+            <select name="category" class="id-category">
+                <option value="">All Categories</option>
+                <?php
+                $categories_stmt = $pdo->prepare("SELECT * FROM ts_category");
+                $categories_stmt->execute();
+                while ($row = $categories_stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="' . $row['name'] . '">' . $row['name'] . '</option>';
+                }
+                ?>
+            </select>
             <button type="submit" class="btn-main"><i class="fa fa-search"></i></button>
         </form>
         <div class="items-nav">
