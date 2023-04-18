@@ -23,8 +23,9 @@
             $products_by_page = 10;
 
             // Get the total number of products
+            
             $category = isset($_GET['category']) ? $_GET['category'] : '';
-            $manufacturer = isset($_GET['manufacturer']) ? $_GET['manufacturer'] : '';
+            $manufacturer = isset($_GET['manufacturer']) ? $_GET['manufacturer'] : '';            
             $search_query = isset($_GET['search']) ? $_GET['search'] : '';
             $where_clause = '';
             $bind_params = [];
@@ -61,8 +62,8 @@
             $total_pages = ceil($total_products / $products_by_page);
 
             // Get current page
-            if (isset($_GET['page'])) {
-                $current_page = $_GET['page'];
+            if (isset($_GET['page'])) {                
+                $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
             } else {
                 $current_page = 1;
             }
@@ -80,6 +81,7 @@
         <div class="logo"><img src="logo/logo.png"></div>
         <!-- Search form -->
         <form action="" method="get" class="search-place">            
+            
             <input type="text" name="search" class="id-search" id="search" placeholder="Search Product" value="<?php echo $search_query ?>">
             <select name="category" class="id-category">
                 <option value="">All Categories</option>
@@ -87,12 +89,13 @@
                 $categories_stmt = $pdo->prepare("SELECT * FROM ts_category");
                 $categories_stmt->execute();
                 while ($row = $categories_stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<option value="' . $row['name'] . '">' . $row['name'] . '</option>';
+                    echo '<option value="' . $row['name'] . '" ' . ($category == $row['name'] ? 'selected' : '') . '>' . $row['name'] . '</option>';
                 }
                 ?>
             </select>
             <button type="submit" class="btn-main"><i class="fa fa-search"></i></button>
         </form>
+
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index.php"><i class="fa fa-home"></i></a>
@@ -177,10 +180,26 @@
     </div><br>
     <!-- Show the pagination -->
     <div class="pagination-text">
-        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-            <a href="?page=<?php echo " " . $i; ?>" <?php if ($i == $current_page) { echo 'class="active"'; } ?>><?php echo  " " . $i; ?></a>
+        <?php 
+        $query_params = $_GET;
+        unset($query_params['page']);
+        $query_string = http_build_query($query_params);
+        for ($i = 1; $i <= $total_pages; $i++) { 
+            $query_params['page'] = $i;
+            $page_url = '?' . http_build_query($query_params);
+        ?>
+            <a href="<?php echo $page_url; ?>" <?php if ($i == $current_page) { echo 'class="active"'; } ?>><?php echo  " " . $i; ?></a>
         <?php } ?>
-    </div>       
+    </div>
+    
+    <?php
+        $offset = ($current_page - 1) * $products_by_page;
+        $paginated_stmt = $pdo->prepare("SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id $where_clause ORDER BY p.id LIMIT $products_by_page OFFSET $offset");
+        foreach ($bind_params as $key => &$value) {
+            $paginated_stmt->bindParam(':' . $key, $value);
+        }
+        $paginated_stmt->execute();
+    ?>      
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
