@@ -181,12 +181,17 @@ header {
 .product_info{    
     margin: 15px;
     padding: 20px;
-    width: 90%;            
+    width: 90%;
+    color: #333333;            
 }
 
-.price-info{
-    color: black;
+.price-info{  
+    color: #131d2f;
     font-size: 30px;
     font-weight: bold;    
+}
+
+h1, h4, p{
+    color: #131d2f;
 }
 
