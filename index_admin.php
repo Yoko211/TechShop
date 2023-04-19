@@ -160,22 +160,33 @@
 
     <h1> PRODUCTS </h1> <br>
     <!-- Show the products for the current page -->
-    <div class="card_container">
-        <?php while ($row = $paginated_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-            <div>
-                <div class="card">
-                    <div class="card_margin">                        
-                        <img src="<?php echo $row['image_url']; ?>" alt=" " width=" ">
-                    </div>
-                    <div class ="content_product">
-                        <h4><?php echo $row['category_name']?></h4>
-                        <p><?php echo $row['description']?></p>                                            
-                    </div>
-                    <div class="price">
-                        <p>$<?php echo $row['price']?></p>
-                    </div>
+    <div class="card_container">    
+        <?php while ($row = $paginated_stmt->fetch(PDO::FETCH_ASSOC)) { 
+            // Assign image and ID values to display on the product information page
+            $id = $row['id'];
+            $manufacturer = $row['manufacturer'];
+            $reference = $row['reference'];
+            $description = $row['description'];
+            $price = $row['price'];
+            $image_url = $row['image_url'];
+            $features = $row['features'];
+            ?>
+            <a href="product_info.php?id=<?php echo $id; ?>&manufacturer=<?php echo $manufacturer; ?>&reference=<?php echo $reference; ?>&description=<?php echo $description; ?>&price=<?php echo $price; ?>&image_url=<?php echo $image_url; ?>&features=<?php echo $features; ?>" target="_blank"> 
+                <div>                
+                    <div class="card">                
+                        <div class="card_margin">
+                            <img src="<?php echo $image_url; ?>" alt=" " width=" ">                        
+                        </div>
+                        <div class ="content_product">
+                            <h4><?php echo $row['category_name']?></h4>
+                            <p><?php echo $description?></p>                                            
+                        </div>
+                        <div class="price">
+                            <p>$<?php echo $price?></p>
+                        </div>
+                    </div>                
                 </div>
-            </div>
+            </a> 
         <?php } ?>
     </div><br>
     <!-- Show the pagination -->

@@ -21,7 +21,6 @@
     <header>
     <?php
             $products_by_page = 10;
-
             // Get the total number of products
             
             $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -78,12 +77,11 @@
             }
             $paginated_stmt->execute();
         ?>
-
         <div class="logo"><img src="logo/logo.png"></div>
 
         <!-- Search form -->
 
-        <form action="" method="get" class="search-place">            
+        <form action="" method="get" class="search-place">           
             
             <input type="text" name="search" class="id-search" id="search" placeholder="Search Product" value="<?php echo $search_query ?>">
             <select name="category" class="id-category">
@@ -158,24 +156,36 @@
          
     <h1> PRODUCTS </h1> <br>
     <!-- Show the products for the current page -->
-    <div class="card_container">
-        <?php while ($row = $paginated_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-            <div>
-                <div class="card">
-                    <div class="card_margin">                        
-                        <img src="<?php echo $row['image_url']; ?>" alt=" " width=" ">
-                    </div>
-                    <div class ="content_product">
-                        <h4><?php echo $row['category_name']?></h4>
-                        <p><?php echo $row['description']?></p>                                            
-                    </div>
-                    <div class="price">
-                        <p>$<?php echo $row['price']?></p>
-                    </div>
+    <div class="card_container">    
+        <?php while ($row = $paginated_stmt->fetch(PDO::FETCH_ASSOC)) { 
+            // Assign image and ID values to display on the product information page
+            $id = $row['id'];
+            $manufacturer = $row['manufacturer'];
+            $reference = $row['reference'];
+            $description = $row['description'];
+            $price = $row['price'];
+            $image_url = $row['image_url'];
+            $features = $row['features'];
+            ?>
+            <a href="product_info.php?id=<?php echo $id; ?>&manufacturer=<?php echo $manufacturer; ?>&reference=<?php echo $reference; ?>&description=<?php echo $description; ?>&price=<?php echo $price; ?>&image_url=<?php echo $image_url; ?>&features=<?php echo $features; ?>" target="_blank"> 
+                <div>                
+                    <div class="card">                
+                        <div class="card_margin">
+                            <img src="<?php echo $image_url; ?>" alt=" " width=" ">                        
+                        </div>
+                        <div class ="content_product">
+                            <h4><?php echo $row['category_name']?></h4>
+                            <p><?php echo $description?></p>                                            
+                        </div>
+                        <div class="price">
+                            <p>$<?php echo $price?></p>
+                        </div>
+                    </div>                
                 </div>
-            </div>
+            </a> 
         <?php } ?>
     </div><br>
+    
     <!-- Show the pagination -->
     <div class="pagination-text">
         <?php 
@@ -198,6 +208,8 @@
         }
         $paginated_stmt->execute();
     ?>
+
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
