@@ -61,7 +61,7 @@
         <tbody>
             <?php
                 include ("_connect.php");
-                $category_name="SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id";
+                $category_name="SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id ORDER BY RAND(p.id)" ;
                 $stmt = $pdo->query($category_name);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             ?>

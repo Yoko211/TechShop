@@ -71,7 +71,7 @@
             $first_product = ($current_page - 1) * $products_by_page;
 
             // Get products for current page
-            $paginated_stmt = $pdo->prepare("SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id $where_clause ORDER BY p.id LIMIT $first_product, $products_by_page");
+            $paginated_stmt = $pdo->prepare("SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id $where_clause ORDER BY RAND(p.id) LIMIT $first_product, $products_by_page");
             foreach ($bind_params as $key => &$value) {
                 $paginated_stmt->bindParam(':' . $key, $value);
             }
@@ -178,7 +178,7 @@
                             <p><?php echo $description?></p>                                            
                         </div>
                         <div class="price">
-                            <p>$<?php echo $price?></p>
+                            <p>$<?php echo number_format($price, 2) ?></p> 
                         </div>
                     </div>                
                 </div>

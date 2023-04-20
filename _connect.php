@@ -4,7 +4,7 @@
         $host = 'localhost';
         $dbname = 'serverside';
         $username = 'serveruser';
-        $password = 'gorgonzola7!';
+        $password = 'gorgonzola7!';        
 
         //Conection manage using PDO
         try{

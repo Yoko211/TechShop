@@ -102,7 +102,7 @@ header {
 } 
 
 .card_margin img{    
-    width: 150px;   
+    width: 130px;   
     
 }
 .content_product{    
@@ -174,7 +174,9 @@ header {
     border-radius: 10px;
 }
 .product_image{
-    margin: 15px;   
+    margin: 15px;
+    display: flex;
+    align-items: center;  
     
 }
 

@@ -22,6 +22,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
       switch ($row['id_role']) {
         case '1':
           header ('location: index_admin.php');
+          echo "validation OK";
           break;
         case '2':
           header ('location: index.php');

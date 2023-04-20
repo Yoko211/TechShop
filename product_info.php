@@ -42,13 +42,13 @@
 
         <div class="product_container">
             <div class="product_image"> 
-                <img src="<?php echo $_GET['image_url']; ?>" width="550px">
+                <img src="<?php echo $_GET['image_url']; ?>" width="500px">
             </div>            
             <div class="product_info">
                 <h4><?php echo $_GET['manufacturer']; ?> - <?php echo $_GET['reference']; ?></h4><br>
                 <p><?php echo $_GET['description']; ?></p><br>
                 <p><strong>Features:</strong> <?php echo $_GET['features']; ?></p><br>
-                <p><strong>Price:</strong><p class="price-info"> $<?php echo $_GET['price']; ?></p></p>
+                <p><strong>Price:</strong><p class="price-info"> <?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
             </div>
         </div>
     </div>
