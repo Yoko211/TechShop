@@ -48,7 +48,7 @@
                 <h4><?php echo $_GET['manufacturer']; ?> - <?php echo $_GET['reference']; ?></h4><br>
                 <p><?php echo $_GET['description']; ?></p><br>
                 <p><strong>Features:</strong> <?php echo $_GET['features']; ?></p><br>
-                <p><strong>Price:</strong><p class="price-info"> <?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
+                <p><strong>Price:</strong><p class="price-info"><?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
             </div>
         </div>
     </div>
