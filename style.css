@@ -195,8 +195,6 @@ header {
     height: 95%;    
     object-fit: contain;   
 }
-
-
 .product_info{    
     margin: 15px;
     padding: 20px;
@@ -209,7 +207,6 @@ header {
     font-size: 30px;
     font-weight: bold;    
 }
-
 h1, h4, p{
     color: #131d2f;
 }
@@ -221,4 +218,7 @@ h1, h4, p{
 }
 .content_comment{
     font-size: 13px;
+}
+#comments{    
+    max-width: 50%;    
 }

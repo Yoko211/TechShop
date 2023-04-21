@@ -73,18 +73,19 @@
                 <p><strong>Features:</strong> <?php echo $_GET['features']; ?></p><br>
                 <p><strong>Price:</strong><p class="price-info"><?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
             </div>
-        </div>
-        <section class="row">
+        </div><br>
+        
+        <section class="row"> 
             <div class="col">
-                <h4>Add Comment</h4><br>
-                <form method="POST">                    
-                    <input type="text" name="comment_title" placeholder="Publish Title"> <br><br>
-                    <textarea name="user_comment" placeholder="Add the comments here" class="form-control" rows="3" cols="30" required></textarea><br>
-                    <button type="submit" class="btn btn-success" name="submit">SAVE</button>
-                    <a href="index.php" class="btn btn-danger">CANCEL</a>
-                </form><br>                
+                    <h4>Add Comment</h4><br>
+                    <form method="POST">                    
+                        <input type="text" name="comment_title" placeholder="Publish Title"> <br><br>
+                        <textarea name="user_comment" placeholder="Add the comments here" class="form-control" rows="3" cols="30" required></textarea><br>
+                        <button type="submit" class="btn btn-success" name="submit">SAVE</button>
+                        <a href="index.php" class="btn btn-danger">CANCEL</a>
+                    </form><br>                
             </div>
-            <div class="col">
+            <div class="col" id="comments">
                 <h4 class="comments">Comments</h4><br>
                     <?php           
                     
