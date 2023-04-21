@@ -6,14 +6,16 @@ body, html{
     
 }
 header {
-    margin: 10px auto;
-    height: 45px;            
-    padding: 10px;
-    width: 75%;            
-    display:flex;
-    background: white;            
-    align-items: center;
-    gap: 50px;            
+  margin: 10px auto;
+  height: 45px;             
+  padding: 10px;
+  width: 75%;            
+  display:flex;
+  background: white;            
+  align-items: center;
+  gap: 50px;
+  top: 0;
+  left: 0;
 }
 
 .logo{
@@ -97,18 +99,25 @@ header {
 }
  .card_margin{
     display: flex;
-    height: 180px;    
-    align-items: center;
+    justify-content: center;
+    height: 180px;
+    max-width: 90%;    
+    align-items: center;    
 } 
 
-.card_margin img{    
-    width: 130px;   
-    
+
+.card_margin img {    
+    margin: 10px;
+    width: 90%;    
+    height: 90%;    
+    object-fit: contain;
 }
+
 .content_product{    
     margin-bottom: 5px;
     width: 90%;
-    text-align: left;    
+    text-align: left;
+       
 }
 .content_product h4{
     text-align: center;
@@ -116,7 +125,7 @@ header {
 }
 
 .content_product p{    
-    height: 130px;
+    height: 100px;
     text-align: left;
     font-size: 12px;
     line-height: 1.4;
@@ -124,9 +133,8 @@ header {
 }
 .price{
     font-size: 20px;
-    font-weight: bold;        
+    font-weight: bold;           
 }
-
 
 .validation-group{
     margin: 40px auto;
@@ -175,16 +183,25 @@ header {
 }
 .product_image{
     margin: 15px;
+    width: 50%;
     display: flex;
-    align-items: center;  
-    
+    align-items: center;
+    justify-content: center;          
 }
+
+.product_image img{
+    margin: 10px;
+    width: 95%;    
+    height: 95%;    
+    object-fit: contain;   
+}
+
 
 .product_info{    
     margin: 15px;
     padding: 20px;
-    width: 90%;
-    color: #333333;            
+    width: 50%;
+    color: #333333;               
 }
 
 .price-info{  
@@ -196,4 +213,12 @@ header {
 h1, h4, p{
     color: #131d2f;
 }
-
+.comments{
+    width: 90%;
+}
+.title_comment{    
+    font-weight: bold;
+}
+.content_comment{
+    font-size: 13px;
+}
