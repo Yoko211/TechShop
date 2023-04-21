@@ -1,5 +1,4 @@
 <?php
-
     require("_connect.php");
     $id = $_GET['id'];
     echo $id;

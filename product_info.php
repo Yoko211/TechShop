@@ -41,7 +41,7 @@
 </head>
 <body>
     <header>
-        <div class="logo"><img src="logo/logo.png"></div>
+        <div class="logo"><img src="logo/logo.png" alt=" "></div>
         <div class="search-place">
             <input type="text" class="id-search" id="id-search" placeholder="Search Product">
             <button class="btn-main"><i class="fa fa-search"></i></button>
@@ -65,13 +65,13 @@
 
         <div class="product_container">
             <div class="product_image"> 
-                <img src="<?php echo $_GET['image_url']; ?>" width="400px">
+                <img src="<?php echo $_GET['image_url']; ?>" alt="" >
             </div>            
             <div class="product_info">
                 <h4><?php echo $_GET['manufacturer']; ?> - <?php echo $_GET['reference']; ?></h4><br>
                 <p><?php echo $_GET['description']; ?></p><br>
                 <p><strong>Features:</strong> <?php echo $_GET['features']; ?></p><br>
-                <p><strong>Price:</strong><p class="price-info"><?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
+                <p><strong>Price:</strong><p class="price-info"><?php echo '$' . number_format($_GET['price'], 2); ?></p>
             </div>
 
         <!-- Catpcha input and validation -->
@@ -84,7 +84,7 @@
             </div><br>
 
             <section class="row">
-                <div class="col" id="comments">            
+                <div class="col" id="comments_section">            
                     <h4>Add Comment</h4><br>
                     <form method="POST">                    
                         <input type="text" name="comment_title" placeholder="Publish Title"> <br><br>
@@ -144,8 +144,7 @@
         <!--Show Comments -->
         <div class="col" id="comments">
             <h4 class="comments">Comments</h4><br>
-                <?php           
-                
+                <?php
                     // Get the product ID
                     $product_id = $_GET['id'];
 
@@ -173,7 +172,7 @@
                     echo '</div><hr>';
                 }
                 ?>
-        </div>
+        </div>        
     </section>        
     </div>
     

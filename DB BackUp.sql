@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2023 at 06:15 AM
+-- Generation Time: Apr 21, 2023 at 02:24 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -69,7 +69,13 @@ INSERT INTO `ts_comment` (`id`, `user_id`, `product_id`, `comment_title`, `user_
 (20, 0, 8, 'Amazing CPU for money. Great value', 'I built a gaming desktop PC with this cpu and a Zotac 3080 trinity GPU. I get higher frame rates with this cpu than the zotac 3080 while playing the new call of duty mw2. I get max:200fps with this cpu and max:165 fps with the gpu, while doing the benchmark test, COD has in game. Keep in mind, I am not the most tech savvy, when it comes to computers and over clocking.', '2023-04-20 22:46:08'),
 (25, 0, 42, 'Great speed and value for the money.', 'The first drive did not work but was also delivered in an opened and resealed package. This drive could not be configured in disk management. The second faired the same and was returned. Although the 2 items gave me pause I returned both without incident and ordered a third. The item arrived in a sealed package and once installed worked immediately and I managed to download and use the recommended software on the Sabrent home page and it worked flawlessly. In fact I enjoyed the simplicity of the cloning software to others I have used in the past. I can only give the Over All rating a 3 as the items shipped were a 3 try event to succeed. Other wise the drive works as expected.', '2023-04-21 00:40:39'),
 (26, 0, 42, 'Great product as regards performance and capacity', 'I was amazed at how tiny it was when it arrived. A bit fiddly to install but not hard for those who know their way around hardware. Kept loosing the tiny little mounting screw inside the PC chassis but eventually got it screwed in thanks to some tape at the end of the screwdriver. It would probably be easier to install on the motherboard before final assembly of a new PC.\r\nWorked immediately as advertised after installation and formatting. So far so good. Used for mass storage of photographs.\r\nUpdate: Almost three months later. No problems to report. Still fast and great for my photo storage needs. Can\'t see what others complain about with this drive. Huge storage, great overall speed.', '2023-04-21 00:41:03'),
-(28, 0, 12, 'Core i9-10900K is a beast, but some reports of its greatness have been exagerated', 'This is hands down a beast of a CPU. However, even with liquid cooling (EVGA CLC 360mm All-In-One RGB LED CPU Liquid Cooler, 3x FX12 120mm) it still reaches thermal limits during prime 95 (Mix of both RAM and CPU testing). The ram runs at 4000Mhz. Perhaps the performance will be better in regular games, rather than stress testing. Still, it is a bit disappointing. However, even though it only has 10 cores, it has a 14nm architecture. Bottom line is that it can theoretically reach over 5 Ghz, but if it reaches thermal limits it is throttled.', '2023-04-21 04:13:00');
+(28, 0, 12, 'Core i9-10900K is a beast, but some reports of its greatness have been exagerated', 'This is hands down a beast of a CPU. However, even with liquid cooling (EVGA CLC 360mm All-In-One RGB LED CPU Liquid Cooler, 3x FX12 120mm) it still reaches thermal limits during prime 95 (Mix of both RAM and CPU testing). The ram runs at 4000Mhz. Perhaps the performance will be better in regular games, rather than stress testing. Still, it is a bit disappointing. However, even though it only has 10 cores, it has a 14nm architecture. Bottom line is that it can theoretically reach over 5 Ghz, but if it reaches thermal limits it is throttled.', '2023-04-21 04:13:00'),
+(30, 0, 12, '\"Big Dog\" processor', 'No regrets on picking this cpu - it ROCKS, go team blue !', '2023-04-21 12:05:40'),
+(31, 0, 4, 'adfas', 'asdfasdf', '2023-04-21 12:12:39'),
+(32, 0, 4, 'asdfasd', 'asdfasdf', '2023-04-21 12:17:30'),
+(33, 0, 4, 'Test', 'Test', '2023-04-21 12:19:34'),
+(34, 0, 4, 'another', 'test', '2023-04-21 12:19:44'),
+(35, 0, 4, 'asdfasdf', 'asdfasdfasdfasf112222', '2023-04-21 12:21:07');
 
 -- --------------------------------------------------------
 
@@ -245,7 +251,7 @@ ALTER TABLE `ts_category`
 -- AUTO_INCREMENT for table `ts_comment`
 --
 ALTER TABLE `ts_comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `ts_product`

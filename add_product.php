@@ -2,11 +2,11 @@
 require("_connect.php");
 if (isset($_POST['submit']))  {   
     // Get form information
-    $manufacturer = $_POST["manufacturer"];
-    $reference = $_POST["reference"];
-    $description = $_POST["description"];
-    $price = $_POST["price"];
-    $category_id = $_POST["category_id"];
+    $manufacturer = filter_input(INPUT_POST, "manufacturer", FILTER_SANITIZE_STRING);
+    $reference = filter_input(INPUT_POST, "reference", FILTER_SANITIZE_STRING);
+    $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+    $price = filter_input(INPUT_POST, "price", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $category_id = filter_input(INPUT_POST, "category_id", FILTER_SANITIZE_NUMBER_INT);
     
     // Process image
     if ($_FILES["image"]["error"] == UPLOAD_ERR_OK) {
@@ -18,7 +18,7 @@ if (isset($_POST['submit']))  {
       $image_url = "";
     }
     
-    $features = $_POST["features"];  
+    $features = filter_input(INPUT_POST, "features", FILTER_SANITIZE_STRING);  
     
     // Insert info on BD
     try {
@@ -28,10 +28,10 @@ if (isset($_POST['submit']))  {
       $stmt->bindParam(':manufacturer', $manufacturer);
       $stmt->bindParam(':reference', $reference);
       $stmt->bindParam(':description', $description);
-      $stmt->bindParam(':price', $price);
+      $stmt->bindParam(':price', $price, PDO::PARAM_STR);
       $stmt->bindParam(':image_url', $image_url);
       $stmt->bindParam(':features', $features);
-      $stmt->bindParam(':category_id', $category_id);
+      $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
       $stmt->execute();
       // echo "Register added successfully";
     } catch(PDOException $e) {
@@ -42,7 +42,6 @@ if (isset($_POST['submit']))  {
     header("Location: products_list_admin.php?msg=Item was added successfully");    
  }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,9 +55,9 @@ if (isset($_POST['submit']))  {
     <title>Add product</title>
 </head>
 <body>
-    <!-- header -->
+    <!-- Navigation Bar -->
     <header>
-        <div class="logo"><img src="logo/logo.png"></div>
+        <div class="logo"><img src="logo/logo.png" alt=""></div>
         <div class="search-place">
             <input type="text" class="id-search" id="id-search" placeholder="Search Product">
             <button class="btn-main"><i class="fa fa-search"></i></button>
@@ -82,38 +81,38 @@ if (isset($_POST['submit']))  {
 
 <h2 class="navbar navbar-light justify-content-center fs-4 mb-3"> ADD NEW PRODUCT</h2>
 
-
+    <!-- Input Data Form -->
     <div class="container">
       <div class="text-center mb-8">                
       </div>
       <div class="container d-flex justify-content-center">
-        <form method="post" style="width:50%;  min-width:300px" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data"> 
+        <form method="post" style="width:50%;  min-width:300px" action="#" enctype="multipart/form-data"> 
 
           <div class="col">
               <label for="manufacturer">Manufacturer:</label>
-              <input type="text" class="form-control" name="manufacturer" required>
+              <input type="text" class="form-control"  id="manufacturer" name="manufacturer" required>
           </div>
           <div class="col">
               <label for="reference">Reference</label>
-              <input type="text" class="form-control" name="reference" required>
+              <input type="text" class="form-control" id="reference" name="reference" required>
           </div>          
           <div class="col">
               <label for="description">Description:</label>
-              <input type="text" class="form-control" name="description" required>
+              <input type="text" class="form-control" id="description" name="description" required>
           </div>
           <div class="col">              
               <label for="price">Price:</label>
-              <input type="number" class="form-control" name="price" step="0.01" required>
+              <input type="number" class="form-control" id="price" name="price" step="0.01" required>
           </div>          
           <div class="col">
               <label for="features">Features:</label><br>
-              <textarea name="features" class="form-control" rows="3" cols="40"></textarea>
+              <textarea name="features" class="form-control" id="features" rows="3" cols="40"></textarea>
           </div><br>
           <div class="col">
               <label for="image">Image:</label><br>
-              <input type="file"  name="image"><br><br>
+              <input type="file" id="image" name="image"><br><br>
           </div>
-          
+          <!-- Drop down category list -->
           <div class="col">
               <?php                    
                 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -122,17 +121,16 @@ if (isset($_POST['submit']))  {
                 $stmt = $pdo->query($category_name_query);
               ?>
                 <label for="category_id">Categoría:</label>
-                <select name="category_id">
+                <select name="category_id" id="category_id">
                   <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                     <option value="<?php echo $row['id']; ?>"><?php echo $row['category_name']; ?></option>
                   <?php } ?>
                 </select>
-          </div><br>
-          
-            <div class="col">
-                <button type="submit" class="btn btn-success" name="submit">SAVE</button>
-                <a href="products_list_admin.php" class="btn btn-danger">CANCEL</a>
-            </div>           
+          </div><br>          
+          <div class="col">
+              <button type="submit" class="btn btn-success" name="submit">SAVE</button>
+              <a href="products_list_admin.php" class="btn btn-danger">CANCEL</a>
+          </div>           
         </form>
       </div>
     </div> 

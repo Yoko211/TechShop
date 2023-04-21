@@ -2,7 +2,6 @@
     include ("_connect.php");    
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +21,7 @@
         <?php
             $products_by_page = 10;
 
-            // Get the total number of products
-            
+            // Get the total number of products            
             $category = isset($_GET['category']) ? $_GET['category'] : '';
             $manufacturer = isset($_GET['manufacturer']) ? $_GET['manufacturer'] : '';            
             $search_query = isset($_GET['search']) ? $_GET['search'] : '';
@@ -78,9 +76,9 @@
             }
             $paginated_stmt->execute();
         ?>
-        <div class="logo"><img src="logo/logo.png"></div>
+        <div class="logo"><img src="logo/logo.png" alt=""></div>
         <!-- Search form -->
-        <form action="" method="get" class="search-place">            
+        <form action="#" method="get" class="search-place">            
             
             <input type="text" name="search" class="id-search" id="search" placeholder="Search Product" value="<?php echo $search_query ?>">
             <select name="category" class="id-category">
@@ -171,11 +169,19 @@
             $image_url = $row['image_url'];
             $features = $row['features'];
             ?>
-            <a href="product_info.php?id=<?php echo $id; ?>&manufacturer=<?php echo $manufacturer; ?>&reference=<?php echo $reference; ?>&description=<?php echo $description; ?>&price=<?php echo $price; ?>&image_url=<?php echo $image_url; ?>&features=<?php echo $features; ?>" target="_blank"> 
+            <a href="product_info.php?<?php echo http_build_query(array(
+                    'id' => $id,
+                    'manufacturer' => $manufacturer,
+                    'reference' => $reference,
+                    'description' => $description,
+                    'price' => $price,
+                    'image_url' => $image_url,
+                    'features' => $features
+                )); ?>" target="_blank"> 
                 <div>                
                     <div class="card">                
                         <div class="card_margin">
-                            <img src="<?php echo $image_url; ?>" alt=" " width=" ">                        
+                            <img src="<?php echo $image_url; ?>" alt=" ">                        
                         </div>
                         <div class ="content_product">
                             <h4><?php echo $row['category_name']?></h4>
@@ -225,7 +231,8 @@
             $paginated_stmt->bindParam(':' . $key, $value);
         }
         $paginated_stmt->execute();
-    ?>      
+    ?>
+    </div>     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />

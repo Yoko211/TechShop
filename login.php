@@ -40,7 +40,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">    
@@ -56,7 +56,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
   <body>
   <header>
-        <div class="logo"><img src="logo/logo.png"></div>        
+        <div class="logo"><img src="logo/logo.png" alt=""></div>        
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index.php"><i class="fa fa-home"></i></a>
@@ -73,7 +73,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
     <div class="validation-group">
     <h1>Sign In</h1>    
-      <form method="post" action="">
+      <form method="post" action="#">
           <div class="form-group">            
             <input type="text" class="form-control"  id="username" name="username" placeholder="USERNAME">        
           </div>

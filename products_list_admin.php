@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <div class="logo"><img src="logo/logo.png"></div>
+        <div class="logo"><img src="logo/logo.png" alt=" "></div>
         <div class="search-place">
             <input type="text" class="id-search" id="id-search" placeholder="Search Product">
             <button class="btn-main"><i class="fa fa-search"></i></button>

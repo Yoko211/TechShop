@@ -1,47 +1,53 @@
 <?php
-require("_connect.php");
+    require("_connect.php");
 
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-// Fetch the product with the given ID
-$sql = "SELECT * FROM `ts_product` WHERE id = :id LIMIT 1";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(array(':id' => $id));
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Fetch the product with the given ID
+    $sql = "SELECT * FROM `ts_product` WHERE id = :id LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(':id' => $id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!isset($_POST["submit"])){
-    $manufacturer = $row['manufacturer'];
-    $reference = $row['reference'];
-    $description = $row['description'];
-    $price = $row['price'];
-    $features = $row['features'];   
-    $image = $row['image_url'];
-    $category_id = $row['category_id'];
-    
-} else {
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-    $manufacturer = filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING);
-    $reference = filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_STRING);
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $features = filter_input(INPUT_POST, 'features', FILTER_SANITIZE_STRING);
-    $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
-    
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
-        $image_tmp = $_FILES['image']['tmp_name'];
-        $image_name = $_FILES['image']['name'];
-        $image_path = "images/" . $image_name;
-        move_uploaded_file($image_tmp, $image_path);
-        $image = $image_path;
-    } else {
+    if (!isset($_POST["submit"])){
+        $manufacturer = $row['manufacturer'];
+        $reference = $row['reference'];
+        $description = $row['description'];
+        $price = $row['price'];
+        $features = $row['features'];   
         $image = $row['image_url'];
-    }    
-    $sql = "UPDATE `ts_product` SET `reference`= ?, `manufacturer`= ?, `description`= ?, `price`= ?, `features`= ?, `image_url`= ?, `category_id`= ? WHERE id=?";
-    $result = $pdo->prepare($sql);
-    $result->execute(array($reference, $manufacturer, $description, $price, $features, $image, $category_id, $id));
-    $pdo = null;
-    header("location:products_list_admin.php");
-}
+        $category_id = $row['category_id'];
+
+    // Validate inputs with Filter Input and Filter Sanitize    
+    } else {
+        $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $manufacturer = filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING);
+        $reference = filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $features = filter_input(INPUT_POST, 'features', FILTER_SANITIZE_STRING);
+        $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
+
+        // Get the URL of the image from the hidden input field
+        $image = $_POST['image_url'];
+
+        // Check if a new image has been uploaded
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+            $image_tmp = $_FILES['image']['tmp_name'];
+            $image_name = $_FILES['image']['name'];
+            $image_path = "images/" . $image_name;
+            move_uploaded_file($image_tmp, $image_path);
+            $image = $image_path;
+        }
+        
+        // Update product with the given ID
+        $sql = "UPDATE `ts_product` SET `reference`= :reference, `manufacturer`= :manufacturer, `description`= :description, `price`= :price, `features`= :features, `image_url`= :image_url, `category_id`= :category_id WHERE id= :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(':reference' => $reference, ':manufacturer' => $manufacturer, ':description' => $description, ':price' => $price, ':features' => $features, ':image_url' => $image, ':category_id' => $category_id, ':id' => $id));
+
+        $pdo = null;
+        header("location:products_list_admin.php");
+    }
 ?>
 
 
@@ -57,9 +63,9 @@ if (!isset($_POST["submit"])){
     <title>Add product</title>
 </head>
 <body>
-
+    <!-- Navigation Bar -->
     <header>
-        <div class="logo"><img src="logo/logo.png"></div>
+        <div class="logo"><img src="logo/logo.png" alt=""></div>
         <div class="search-place">
             <input type="text" class="id-search" id="id-search" placeholder="Search Product">
             <button class="btn-main"><i class="fa fa-search"></i></button>
@@ -80,60 +86,66 @@ if (!isset($_POST["submit"])){
     </header>
     <h2 class="navbar navbar-light justify-content-center fs-4 mb-3">EDIT PRODUCT INFORMATION</h2>
 
-
+    
+    
+    <!-- Input informacion -->
     <div class="container">
         <div class="container d-flex justify-content-center">        
-            <form method="post" style="width:50%; min-width:300px" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">        
-                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">          
-                
+            <form method="post" style="width:50%; min-width:300px" action="#" enctype="multipart/form-data">
+
+                <!-- Add a hidden input field for the image URL -->                
+                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                <input type="hidden" name="image_url" value="<?php echo $row['image_url']; ?>">         
+
                 <div class="col">
                     <label for="manufacturer">Manufacturer:</label>
-                    <input type="text" class="form-control" name="manufacturer" required value="<?php echo $manufacturer ?>">
+                    <input type="text" class="form-control" name="manufacturer" required value="<?php echo isset($manufacturer) ? $manufacturer : ''; ?>">
                 </div><br>
                 <div class="col">
-                        <label for="reference">Reference:</label>
-                        <input type="text" class="form-control" name="reference" required value="<?php echo $reference ?>">
-                    </div><br>
-                    
-                    <div class="col">
-                        <label for="description">Description:</label>
-                        <textarea class="form-control" name="description" required><?php echo $description ?></textarea>
-                    </div><br>
+                    <label for="reference">Reference:</label>
+                    <input type="text" class="form-control" name="reference" required value="<?php echo isset($reference) ? $reference : ''; ?>">
+                </div><br>
 
-                    <div class="col">
-                        <label for="price">Price:</label>
-                        <input type="number" class="form-control" name="price" required value="<?php echo $price ?>">
-                    </div><br>
+                <div class="col">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" name="description" required><?php echo isset($description) ? $description : ''; ?></textarea>
+                </div><br>
 
-                    <div class="col">
-                        <label for="features">Features:</label>
-                        <textarea class="form-control" name="features" required><?php echo $features ?></textarea>
-                    </div><br>
+                <div class="col">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" name="price" required value="<?php echo isset($price) ? $price : ''; ?>">
+                </div><br>
+
+                <div class="col">
+                    <label for="features">Features:</label>
+                    <textarea class="form-control" name="features" required><?php echo isset($features) ? $features : ''; ?></textarea>
+                </div><br>
+
                 <div class="col">
                     <label for="image">Image:</label>
                     <?php if (!empty($row["image_url"])):?>
                         <img src="<?php echo $row["image_url"] ?>" alt=" " width="100"><br><br>
                     <?php endif; ?>
                     <input type="file" name="image" accept=".jpg,.png">
-                </div> <br>         
+                </div><br>         
 
+                    <!-- displays a form with a dropdown list of categories and two buttons. -->
                 <div class="col">
                     <label for="category_name">Category Name:</label>
                     <?php
-                        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-                        $category_name_query = "SELECT DISTINCT c.name AS category_name, c.id AS category_id
-                                                FROM ts_product p 
-                                                JOIN ts_category c 
-                                                ON p.category_id = c.id";
-                        $stmt = $pdo->query($category_name_query);
+                    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                    $category_name_query = "SELECT DISTINCT c.name AS category_name, c.id AS category_id
+                                            FROM ts_product p 
+                                            JOIN ts_category c 
+                                            ON p.category_id = c.id";
+                    $stmt = $pdo->query($category_name_query);
                     ?>
                     <select name="category_id">
                         <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-                            <option value="<?php echo $row['category_id']; ?>" <?php if ($category_id == $row['category_id']) echo "selected"; ?>><?php echo $row['category_name']; ?></option>
+                            <option value="<?php echo $row['category_id']; ?>" <?php if (isset($category_id) && $category_id == $row['category_id']) echo "selected"; ?>><?php echo $row['category_name']; ?></option>
                         <?php } ?>
                     </select>
                 </div><br>
-
                 <div class="col">
                     <input type="hidden" name="id" value="<?php echo $id ?>">
                     <button type="submit" class="btn btn-success" name="submit">UPDATE</button>
