@@ -73,51 +73,108 @@
                 <p><strong>Features:</strong> <?php echo $_GET['features']; ?></p><br>
                 <p><strong>Price:</strong><p class="price-info"><?php echo '$' . number_format($_GET['price'], 2); ?></p></p>
             </div>
+
+        <!-- Catpcha input and validation -->
         </div><br>
-        
-        <section class="row"> 
-            <div class="col">
+            <div class="captcha-input" <?php if (isset($_COOKIE['captcha_validated'])) echo 'style="display: none;"'; ?>>
+            <h6>Enter Captcha to add Comments</h6>
+                <img id="captcha-image" src="captcha_images/" alt="">
+                <input type="text" id="captcha-input" placeholder="Enter animal name">
+                <button id="submit-button">Submit</button>
+            </div><br>
+
+            <section class="row">
+                <div class="col" id="comments">            
                     <h4>Add Comment</h4><br>
                     <form method="POST">                    
                         <input type="text" name="comment_title" placeholder="Publish Title"> <br><br>
                         <textarea name="user_comment" placeholder="Add the comments here" class="form-control" rows="3" cols="30" required></textarea><br>
-                        <button type="submit" class="btn btn-success" name="submit">SAVE</button>
-                        <a href="index.php" class="btn btn-danger">CANCEL</a>
-                    </form><br>                
-            </div>
-            <div class="col" id="comments">
-                <h4 class="comments">Comments</h4><br>
-                    <?php           
-                    
-                        // Get the product ID
-                        $product_id = $_GET['id'];
+                        <div id="button-container" <?php if (!isset($_COOKIE['captcha_validated'])) echo 'style="display: none;"'; ?>>
+                            <button type="submit" class="btn btn-success" name="submit">SAVE</button>
+                            <a href="index.php" class="btn btn-danger">CANCEL</a>
+                        </div>                           
+                    </form><br>
+                <script>
+                    const images = {
+                        cat: "captcha_images/cat.jpg",
+                        dog: "captcha_images/dog.jpg",
+                        pig: "captcha_images/pig.jpg",
+                        deer: "captcha_images/deer.jpg"
+                    };
+                    const captchaImage = document.querySelector('#captcha-image');
+                    const captchaInput = document.querySelector('#captcha-input');
+                    const submitButton = document.querySelector('#submit-button');
+                    const captchaDiv = document.querySelector('.captcha-input');
+                    const commentsDiv = document.querySelector('#comments');
+                    const buttonContainer = document.querySelector('#button-container');
+                    captchaImage.width = "70";
 
-                        // Connect to the database
-                        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        
-                        // Prepare the SQL query to retrieve comments for this product
-                        $stmt = $pdo->prepare("SELECT comment_title, user_comment, created_at 
-                                            FROM ts_comment 
-                                            WHERE product_id = :product_id 
-                                            ORDER BY created_at DESC");
-                        $stmt->bindParam(':product_id', $product_id);
-                        $stmt->execute();
-
-                        // Print each comment
-                        while ($row = $stmt->fetch()) {
-                            $comment_date = $row['created_at'];
-                            echo '<div>';
-                    ?>
-                        <p class="title_comment"><?php echo $row['comment_title']?></p>
-                        <p class="small text-muted">Commented on: <?php  echo date("Y-m-d", strtotime($row  ['created_at']))?></p>
-                        <p class="content_comment"><?php echo $row['user_comment']?></p>
-                    <?php
-                        echo '</div><hr>';
+                    function generateCaptcha() {
+                        const keys = Object.keys(images);
+                        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+                        captchaImage.src = images[randomKey];
+                        captchaImage.alt = randomKey.charAt(0).toUpperCase() + randomKey.slice(1);
+                        return randomKey;
                     }
-                    ?>
+                    function validateCaptcha() {
+                        event.preventDefault();
+                        const userInput = captchaInput.value.toLowerCase();
+                        const captchaCode = captchaImage.alt.toLowerCase();
+                        if (userInput === captchaCode) {
+                            alert('CAPTCHA validation successful!');                        
+                            buttonContainer.style.display = 'block';
+                            captchaDiv.style.display = 'none';
+                            document.cookie = "captcha_validated=true";
+                        } else {
+                            alert('Incorrect CAPTCHA code!');
+                            generateCaptcha();
+                        }
+                    }
+                    if (!document.cookie.includes('captcha_validated=true')) {
+                        submitButton.addEventListener('click', validateCaptcha);
+                        generateCaptcha();
+                    } else {
+                        buttonContainer.style.display = 'block';
+                        captchaDiv.style.display = 'none';
+                    }
+                </script>
             </div>
-        </section>        
+
+            
+        <!--Show Comments -->
+        <div class="col" id="comments">
+            <h4 class="comments">Comments</h4><br>
+                <?php           
+                
+                    // Get the product ID
+                    $product_id = $_GET['id'];
+
+                    // Connect to the database
+                    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    // Prepare the SQL query to retrieve comments for this product
+                    $stmt = $pdo->prepare("SELECT comment_title, user_comment, created_at 
+                                        FROM ts_comment 
+                                        WHERE product_id = :product_id 
+                                        ORDER BY created_at DESC");
+                    $stmt->bindParam(':product_id', $product_id);
+                    $stmt->execute();
+
+                    // Print each comment
+                    while ($row = $stmt->fetch()) {
+                        $comment_date = $row['created_at'];
+                        echo '<div>';
+                ?>
+                    <p class="title_comment"><?php echo $row['comment_title']?></p>
+                    <p class="small text-muted">Posted on: <?php  echo date("F d, Y", strtotime($row  ['created_at']))?></p>
+                    <p class="content_comment"><?php echo $row['user_comment']?></p>
+                <?php
+                    echo '</div><hr>';
+                }
+                ?>
+        </div>
+    </section>        
     </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
