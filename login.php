@@ -1,42 +1,47 @@
 <?php 
-require '_connect.php';
-SESSION_START();
+  require '_connect.php';
+  
+  // Start session
+  SESSION_START();
+  $error_message = ""; 
+  if(isset($_POST['username']) && isset($_POST['password'])){ 
+    $username = $_POST['username'];
+    $password = $_POST['password']; 
 
-$error_message = ""; 
-
-if(isset($_POST['username']) && isset($_POST['password'])){ 
-  $username = $_POST['username'];
-  $password = $_POST['password']; 
-
-  if ($username == null || $password == null){
-    //echo "Type username and password";
-    $error_message = "Type username and password";          
-  }
-  else{
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $pdo->prepare('SELECT username, password, id_role FROM ts_user WHERE username = :username AND password = :password');
-    $stmt->execute(array(':username' => $username, ':password' => $password));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row == true){      
-      echo $row['id_role'];
-      switch ($row['id_role']) {
-        case '1':
-          header ('location: index_admin.php');
-          echo "validation OK";
-          break;
-        case '2':
-          header ('location: index.php');
-          break;        
-        default:          
-          break;
-      }
-    
-    }else{
-      $error_message = "Username or Password incorrect";     
+    if ($username == null || $password == null){
+      //echo "Type username and password";
+      $error_message = "Type username and password";          
     }
-  }  
-}
+    else{
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $stmt = $pdo->prepare('SELECT username, password, id_role FROM ts_user WHERE username = :username AND password = :password');
+      $stmt->bindParam(':username', $username);
+      $stmt->bindParam(':password', $password);
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      if ($row == true){      
+        echo $row['id_role'];
+        switch ($row['id_role']) {
+          // Redirect to the admin dashboard
+          case '1':
+            header ('location: index_admin.php');
+            echo "validation OK";
+            break;
+          // Redirect to the user dashboard  
+          case '2':
+            header ('location: index.php');
+            break;        
+          default:          
+            break;
+        }    
+      }else{
+        // Set error message
+        $error_message = "Username or Password incorrect";     
+      }
+    }  
+  }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -55,15 +60,13 @@ if(isset($_POST['username']) && isset($_POST['password'])){
   </head>
 
   <body>
-  <header>
+    <!-- Navigation bar -->
+  <header class="w_search">
         <div class="logo"><img src="logo/logo.png" alt=""></div>        
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index.php"><i class="fa fa-home"></i></a>
-            </div>
-            <div class = item-option title="Products List">
-                <a href="products_list.php"><i class="fa fa-list"></i></a>
-            </div>                
+            </div>                            
             <div class="item-option" title="Log In">
                 <a href="login.php"><i class="fa fa-user"></i></a>            
             </div>
@@ -71,6 +74,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         </div>
     </header>
 
+    <!-- Data Validation -->
     <div class="validation-group">
     <h1>Sign In</h1>    
       <form method="post" action="#">

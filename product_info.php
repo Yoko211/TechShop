@@ -40,12 +40,8 @@
 <title>Product Information</title>
 </head>
 <body>
-    <header>
-        <div class="logo"><img src="logo/logo.png" alt=" "></div>
-        <div class="search-place">
-            <input type="text" class="id-search" id="id-search" placeholder="Search Product">
-            <button class="btn-main"><i class="fa fa-search"></i></button>
-        </div>
+    <header class="w_search">
+        <div class="logo"><img src="logo/logo.png" alt=" "></div>        
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index.php"><i class="fa fa-home"></i></a>
@@ -99,7 +95,8 @@
                         cat: "captcha_images/cat.jpg",
                         dog: "captcha_images/dog.jpg",
                         pig: "captcha_images/pig.jpg",
-                        deer: "captcha_images/deer.jpg"
+                        rabbit: "captcha_images/rabbit.jpg",
+                        cow: "captcha_images/cow.jpg"
                     };
                     const captchaImage = document.querySelector('#captcha-image');
                     const captchaInput = document.querySelector('#captcha-input');
@@ -107,7 +104,7 @@
                     const captchaDiv = document.querySelector('.captcha-input');
                     const commentsDiv = document.querySelector('#comments');
                     const buttonContainer = document.querySelector('#button-container');
-                    captchaImage.width = "70";
+                    captchaImage.width = "80";
 
                     function generateCaptcha() {
                         const keys = Object.keys(images);

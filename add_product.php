@@ -56,12 +56,9 @@ if (isset($_POST['submit']))  {
 </head>
 <body>
     <!-- Navigation Bar -->
-    <header>
+    <header class="w_search">
         <div class="logo"><img src="logo/logo.png" alt=""></div>
-        <div class="search-place">
-            <input type="text" class="id-search" id="id-search" placeholder="Search Product">
-            <button class="btn-main"><i class="fa fa-search"></i></button>
-        </div>
+        
         <div class="items-nav">
             <div class = item-option title="Home">
                 <a href="index_admin.php"><i class="fa fa-home"></i></a>
