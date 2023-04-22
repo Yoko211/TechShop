@@ -183,8 +183,7 @@
                             </div>
                             <div class="comments">
                                 <p class="small text-muted">Comments: 
-                                    <?php
-                                        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+                                    <?php                                        
                                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                                         $stmt = $pdo->prepare("SELECT COUNT(*) as cant FROM ts_comment WHERE product_id = :id");
                                         $stmt->bindParam(':id', $id);

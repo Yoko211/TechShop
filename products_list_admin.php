@@ -1,3 +1,8 @@
+
+<?php 
+    include ("_connect.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,31 +15,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
     <link rel="stylesheet" href="style.css">    
-<title>Tech Shop</title>
+<title>Products List</title>
 </head>
 <body>
-    <header>
-        <div class="logo"><img src="logo/logo.png" alt=" "></div>
-        <div class="search-place">
-            <input type="text" class="id-search" id="id-search" placeholder="Search Product">
-            <button class="btn-main"><i class="fa fa-search"></i></button>
+
+<header>
+    <div class="logo"><img src="logo/logo.png" alt=" "></div>
+    <form action="#" method="GET" class="search-place">
+        <input type="text" class="id-search" id="id-search" name="search" placeholder="Search Product" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+        <select name="category">
+            <option value="">All Categories</option>
+            <?php
+                $stmt = $pdo->query("SELECT * FROM ts_category");
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="' . $row['id'] . '"';
+                    if (isset($_GET['category']) && $_GET['category'] == $row['id']) {
+                        echo ' selected';
+                    }
+                    echo '>' . $row['name'] . '</option>';
+                }
+            ?>
+        </select>
+        <button class="btn-main"><i class="fa fa-search"></i></button>
+    </form>
+    <div class="items-nav">
+        <div class = item-option title="Home">
+            <a href="index_admin.php"><i class="fa fa-home"></i></a>
         </div>
-        <div class="items-nav">
-            <div class = item-option title="Home">
-                <a href="index_admin.php"><i class="fa fa-home"></i></a>
-            </div>
-            <div class = item-option title="Products List">
-                <a href="products_list_admin.php"><i class="fa fa-list"></i></a>
-            </div>
-            <div class="item-option" title="Register new product">
-                <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
-            </div>            
-            <div class="item-option" title="Log In">
-                <a href="login.php"><i class="fa fa-user"></i></a>            
-            </div>
-            <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
+        <div class = item-option title="Products List">
+            <a href="products_list_admin.php"><i class="fa fa-list"></i></a>
         </div>
-    </header>    
+        <div class="item-option" title="Register new product">
+            <a href="add_product.php"><i class="fa fa-sign-in"></i></a>
+        </div>            
+        <div class="item-option" title="Log In">
+            <a href="login.php"><i class="fa fa-user"></i></a>            
+        </div>
+        <div class="item-option" title="Shopping Cart"><i class="fa fa-shopping-cart"></i></div>          
+    </div>
+</header>   
     <div class="container">
     <h4>PRODUCTS</h4>
     <?php
@@ -60,12 +79,35 @@
         </thead>
         <tbody>
             <?php
-                include ("_connect.php");
-                $category_name="SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id ORDER BY RAND(p.id)" ;
+                $category_id = '';
+                $category_name="SELECT p.*, c.name AS category_name FROM ts_product p JOIN ts_category c ON p.category_id = c.id ";
+
+                if (isset($_GET['category']) && !empty($_GET['category'])) {
+                    $category_id = $_GET['category'];
+                    $category_name .= "WHERE p.category_id = $category_id ";
+                }
+
+                $category_name .= "ORDER BY RAND(p.id)";
                 $stmt = $pdo->query($category_name);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // Filter search
+                    if (isset($_GET['search']) && !empty($_GET['search'])) {
+                        $search = $_GET['search'];
+                        if (stripos($row['manufacturer'], $search) === false && stripos($row['reference'], $search) === false) {
+                            continue; 
+                        }
+                    }
             ?>
-            <tr>
+            <!-- Send information product to product info section -->
+            <tr onclick="window.location='product_info.php?<?php echo http_build_query(array(
+                            'id' => $row['id'],
+                            'manufacturer' => $row['manufacturer'],
+                            'reference' => $row['reference'],
+                            'description' => $row['description'],
+                            'price' => $row['price'],
+                            'image_url' => $row['image_url'],
+                            'features' => $row['features']
+                        )); ?>'">
                 <td><?php echo $row['manufacturer']?></td>
                 <td><?php echo $row['reference']?></td>
                 <td><?php echo $row['price']?></td>
@@ -78,7 +120,8 @@
                     <a href="delete.php?id=<?php echo $row['id']?>" class="link-dark" onclick="return confirm('¿Are you sure you want to delete the product?')">
                         <i class="fa-solid fa-trash fa-1x" title= "Delete" style="color: #284880;"></i>
                     </a>                    
-                </td>
+                    
+                </td>                
             </tr>
             <?php
                 }
