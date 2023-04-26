@@ -5,6 +5,10 @@
     Description: Final Project
     ********************/
     
+*{
+    box-sizing: border-box;
+}
+
 
 body, html{            
     margin: 0;
@@ -194,12 +198,17 @@ header {
     border-radius: 5px;
     width: 35%;
 }
+.price-info{  
+    color: #131d2f;
+    font-size: 30px;
+    font-weight: bold;    
+}
 .product_image{
     margin: 15px;
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;          
+    justify-content: center;
 }
 
 .product_image img{
@@ -215,11 +224,7 @@ header {
     color: #333333;               
 }
 
-.price-info{  
-    color: #131d2f;
-    font-size: 30px;
-    font-weight: bold;    
-}
+
 h1, h4, p{
     color: #131d2f;
 }
